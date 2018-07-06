@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceMapper", "ServiceMapper\ServiceMapper.csproj", "{6B39295A-AC2C-4CF9-9A1F-5F3042584522}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceMapper.Tests", "ServiceMapper.Tests\ServiceMapper.Tests.csproj", "{29F67C0F-B452-4E19-8AA3-6CF20678A9C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B39295A-AC2C-4CF9-9A1F-5F3042584522}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B39295A-AC2C-4CF9-9A1F-5F3042584522}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B39295A-AC2C-4CF9-9A1F-5F3042584522}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B39295A-AC2C-4CF9-9A1F-5F3042584522}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29F67C0F-B452-4E19-8AA3-6CF20678A9C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29F67C0F-B452-4E19-8AA3-6CF20678A9C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29F67C0F-B452-4E19-8AA3-6CF20678A9C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29F67C0F-B452-4E19-8AA3-6CF20678A9C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B5C4014-E483-4B5E-8DA2-D40576294FEC}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.knowitsolutions.tools/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ServiceMapper.Tests\\ServiceMapper.Tests.csproj
+		SccProjectName1 = ServiceMapper.Tests
+		SccLocalPath1 = ServiceMapper.Tests
+		SccProjectUniqueName2 = ServiceMapper\\ServiceMapper.csproj
+		SccProjectName2 = ServiceMapper
+		SccLocalPath2 = ServiceMapper
+	EndGlobalSection
+EndGlobal
