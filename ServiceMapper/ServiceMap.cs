@@ -1,5 +1,4 @@
-﻿using StructureMap;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace ServiceMapper
@@ -30,7 +29,7 @@ namespace ServiceMapper
 			foreach (KeyValuePair<Type, Map> entity in _maps)
 			{
 				if(!entity.Value.Ignored)
-					mapped.Add(entity.Key, _mapper.Map(entity.Value));
+					mapped[entity.Key] = _mapper.Map(entity.Value);
 			}
 			return mapped;
 		}
