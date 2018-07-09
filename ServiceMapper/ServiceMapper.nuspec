@@ -4,7 +4,7 @@
 		<id>$id$</id>
 		<version>$version$</version>
 		<title>$title$</title>
-		<authors>$author$</authors>
+		<authors>Niklas Trippler</authors>
 		<owners>$author$</owners>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>$description$</description>
