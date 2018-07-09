@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ServiceMapper
+﻿namespace ServiceMapper
 {
 	public interface IMapper
 	{

@@ -1,29 +1,30 @@
 ﻿using System;
+using System.ServiceModel.Channels;
 
 namespace ServiceMapper
 {
 	public class Map
 	{
 		public Type Type { get; private set; }
-		public bool Ignored { get; set; }
-		private string _location;
-		private string _binding;
+		public bool Ignored { get; private set; }
+		public string Location { get; private set; }
+		public Binding Binding { get; private set; }
 
 		public Map(Type type)
 		{
 			Type = type;
 		}
-		public Map Location(string name) {
-			_location = name;
-			return this;
+		public void SetLocation(string name)
+		{
+			Location = name;
 		}
-		public Map Binding(string binding) {
-			_binding = binding;
-			return this;
+		public void SetBinding(Binding binding)
+		{
+			Binding = binding;
 		}
-		public Map Ignore() {
+		public void Ignore()
+		{
 			Ignored = true;
-			return this;
 		}
 	}
 }

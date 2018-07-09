@@ -36,6 +36,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,13 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyLoader.cs" />
-    <Compile Include="IMapper.cs" />
-    <Compile Include="IServiceMap.cs" />
+    <Compile Include="Bindings\DefaultBindings.cs" />
+    <Compile Include="Helpers\AssemblyLoader.cs" />
+    <Compile Include="Interfaces\IMapper.cs" />
+    <Compile Include="Interfaces\IServiceMap.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceMap.cs" />
-    <Compile Include="ServiceMapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

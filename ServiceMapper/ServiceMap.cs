@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ServiceMapper
 {
@@ -15,6 +16,14 @@ namespace ServiceMapper
 			_mapper = mapper;
 			foreach (Type t in interfaces)
 				_maps.Add(t, new Map(t));
+		}
+
+		public static IServiceMap Create(Func<Type, bool> matcher, IMapper mapper)
+		{
+			AssemblyLoader.LoadAllAssemblies();
+			IEnumerable<Type> interfaces = AssemblyLoader.GetAllInterfaces();
+			IEnumerable<Type> matchingInterfaces = interfaces.Where(t => matcher(t));
+			return new ServiceMap(matchingInterfaces.ToList(), mapper);
 		}
 
 		public IServiceMap Override<T>(Action<Map> overrideFunction)
