@@ -49,6 +49,15 @@ namespace ServiceMapper.Tests
 			}, _mapper.Object);
 		}
 	}
-	interface ITest { };
-	interface ITest2 { };
+	[ServiceContract]
+	interface ITest {
+		[OperationContract]
+		void test1();
+	};
+
+	[ServiceContract]
+	interface ITest2 {
+		[OperationContract]
+		void test2();
+	};
 }

@@ -12,7 +12,7 @@ namespace ServiceMapper.Bindings
 		private static readonly int _largeSize = int.MaxValue;
 		public static Binding GetBasicHttpBinding(bool https)
 		{
-			return new BasicHttpBinding
+			var binding = new BasicHttpBinding
 			{
 				Name = "DefaultHttpBinding",
 				OpenTimeout = TenMinutes,
@@ -28,15 +28,18 @@ namespace ServiceMapper.Bindings
 					MaxBytesPerRead = 4096,
 					MaxNameTableCharCount = _size
 				},
-				Security = https ? new BasicHttpSecurity
-				{
-					Mode = BasicHttpSecurityMode.Transport
-				} : null,
+
 				TextEncoding = Encoding.UTF8,
 				MaxBufferSize = _size,
 				MaxBufferPoolSize = 524288,
 				MessageEncoding = WSMessageEncoding.Text,
 			};
+			if (https)
+				binding.Security = new BasicHttpSecurity
+				{
+					Mode = BasicHttpSecurityMode.Transport
+				};
+			return binding;
 		}
 
 		public static Binding GetBinaryBinding(bool https)
