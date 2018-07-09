@@ -21,7 +21,13 @@ namespace ServiceMapper
 			{
 				if (!AppDomain.CurrentDomain.GetAssemblies().Any(a => a.FullName == name.FullName))
 				{
-					LoadReferencedAssembly(Assembly.Load(name));
+					try
+					{
+						LoadReferencedAssembly(Assembly.Load(name));
+					}catch(Exception e)
+					{
+						//Eat exception as not everything can be loaded always
+					}
 				}
 			}
 		}
