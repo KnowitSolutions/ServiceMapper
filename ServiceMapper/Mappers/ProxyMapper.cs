@@ -22,7 +22,7 @@ namespace ServiceMapper.Mappers
 		public object Map(Map type)
 		{
 			var URI = _nameMapper.Map(type);
-			var channel = _generator.GetType().GetMethod("GenerateProxy").MakeGenericMethod(type.Type).Invoke(_generator, new object[] { URI, _binding, _endpointBehavior});
+			var channel = _generator.GetType().GetMethod("GenerateProxy").MakeGenericMethod(type.Type).Invoke(_generator, new object[] { URI, type.Binding ?? _binding, _endpointBehavior});
 			return Convert.ChangeType(channel, type.Type);
 		}
 	}
