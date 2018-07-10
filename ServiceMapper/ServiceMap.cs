@@ -35,10 +35,21 @@ namespace ServiceMapper
 		public IDictionary<Type, object> Map()
 		{
 			IDictionary<Type, object> mapped = new Dictionary<Type, object>();
+			IList<Exception> exceptions = new List<Exception>();
 			foreach (KeyValuePair<Type, Map> entity in _maps)
 			{
-				if(!entity.Value.Ignored)
-					mapped[entity.Key] = _mapper.Map(entity.Value);
+				try
+				{
+					if (!entity.Value.Ignored)
+						mapped[entity.Key] = _mapper.Map(entity.Value);
+				}catch(Exception e)
+				{
+					exceptions.Add(e);
+				}
+			}
+			if (exceptions.Any())
+			{
+				throw new Exception($"One or more exceptions occured during mapping. Please evaluate the exceptions below: \n{string.Join("\n\t", exceptions.Select(x => x.Message))}");
 			}
 			return mapped;
 		}
