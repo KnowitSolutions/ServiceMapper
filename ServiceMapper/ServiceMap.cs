@@ -49,7 +49,7 @@ namespace ServiceMapper
 			}
 			if (exceptions.Any())
 			{
-				throw new Exception($"One or more exceptions occured during mapping. Please evaluate the exceptions below: \n{string.Join("\n\t", exceptions.Select(x => x.Message))}");
+				throw new Exception($"One or more exceptions occured during mapping. Please evaluate the exceptions below: \n{string.Join("\n\t", exceptions.Select(x => x.Message))}", exceptions.First());
 			}
 			return mapped;
 		}
