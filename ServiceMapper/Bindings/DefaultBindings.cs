@@ -10,7 +10,7 @@ namespace ServiceMapper.Bindings
 		private static readonly TimeSpan TenMinutes = new TimeSpan(0, 10, 0);
 		private static readonly int _size = 41943040;
 		private static readonly int _largeSize = int.MaxValue;
-		public static Binding GetBasicHttpBinding(bool https)
+		public static Binding GetBasicHttpBinding(bool https, TransferMode transferMode = TransferMode.Buffered)
 		{
 			var binding = new BasicHttpBinding
 			{
@@ -33,6 +33,7 @@ namespace ServiceMapper.Bindings
 				MaxBufferSize = _size,
 				MaxBufferPoolSize = 524288,
 				MessageEncoding = WSMessageEncoding.Text,
+				TransferMode = transferMode
 			};
 			if (https)
 				binding.Security = new BasicHttpSecurity
@@ -42,7 +43,7 @@ namespace ServiceMapper.Bindings
 			return binding;
 		}
 
-		public static Binding GetBinaryBinding(bool https)
+		public static Binding GetBinaryBinding(bool https, TransferMode transferMode = TransferMode.Buffered)
 		{
 			var binding = new CustomBinding
 			{
@@ -67,14 +68,16 @@ namespace ServiceMapper.Bindings
 				binding.Elements.Add(new HttpsTransportBindingElement
 				{
 					MaxReceivedMessageSize = _largeSize,
-					MaxBufferSize = _largeSize
+					MaxBufferSize = _largeSize,
+					TransferMode = transferMode
 				});
 			else
 				binding.Elements.Add(new HttpTransportBindingElement
 				{
 					MaxReceivedMessageSize = _largeSize,
 					MaxBufferSize = _largeSize,
-					MaxBufferPoolSize = _largeSize
+					MaxBufferPoolSize = _largeSize,
+					TransferMode = transferMode
 				});
 			return binding;
 		}
