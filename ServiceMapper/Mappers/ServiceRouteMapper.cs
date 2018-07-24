@@ -2,7 +2,7 @@
 
 namespace ServiceMapper.Mappers
 {
-	class ServiceRouteMapper : IMapper
+	public class ServiceRouteMapper : IMapper
 	{
 		private readonly INameMapper _nameMapper;
 		private readonly ServiceHostFactory _serviceHostFactory;
