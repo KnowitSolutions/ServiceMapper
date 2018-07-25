@@ -1,4 +1,6 @@
-﻿using System.ServiceModel.Activation;
+﻿using System;
+using System.Linq;
+using System.ServiceModel.Activation;
 
 namespace ServiceMapper.Mappers
 {
@@ -14,7 +16,14 @@ namespace ServiceMapper.Mappers
 		}
 		public object Map(Map type)
 		{
-			return new ServiceRoute(_nameMapper.Map(type), _serviceHostFactory, type.Type);
+			if (type.HostingType != null)
+				return new ServiceRoute(_nameMapper.Map(type), _serviceHostFactory, type.HostingType);
+			var types = AssemblyLoader.GetAllTypes().Where(x => x.GetInterfaces().Contains(type.Type));
+			if (types.Count() > 1)
+				throw new Exception($"Error: multiple matching types for interface \"{type.Type.Namespace}.{type.Type.Name}\". Candidates are: {string.Join(", ", types.Select(x => x.Namespace + "." + x.Name))}. Please override hostingtype with one of these.");
+			if (!types.Any())
+				throw new Exception($"Error: No matching types found for interface: \"{type.Type.Namespace}.{type.Type.Name}\". Override with a hostingtype or Ignore()");
+			return new ServiceRoute(_nameMapper.Map(type), _serviceHostFactory, types.First());
 		}
 	}
 }

@@ -34,6 +34,10 @@ namespace ServiceMapper
 
 		public static IEnumerable<Type> GetAllInterfaces()
 		{
+			return GetAllTypes().Where(x => x.IsInterface);
+		}
+		public static IEnumerable<Type> GetAllTypes()
+		{
 			var assemblies = AppDomain.CurrentDomain.GetAssemblies();
 			IEnumerable<Type> types = new List<Type>();
 			foreach (Assembly asm in assemblies)

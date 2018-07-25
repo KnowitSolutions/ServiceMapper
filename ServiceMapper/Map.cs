@@ -9,6 +9,7 @@ namespace ServiceMapper
 		public bool Ignored { get; private set; }
 		public string Location { get; private set; }
 		public Binding Binding { get; private set; }
+		public Type HostingType { get; private set; }
 
 		public Map(Type type)
 		{
@@ -21,6 +22,10 @@ namespace ServiceMapper
 		public void SetBinding(Binding binding)
 		{
 			Binding = binding;
+		}
+		public void SetHostingType(Type type)
+		{
+			HostingType = type;
 		}
 		public void Ignore()
 		{
