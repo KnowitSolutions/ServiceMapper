@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -24,7 +25,8 @@ namespace ServiceMapper
 					try
 					{
 						LoadReferencedAssembly(Assembly.Load(name));
-					}catch(Exception e)
+					}
+					catch (Exception e)
 					{
 						//Eat exception as not everything can be loaded always
 					}
@@ -36,22 +38,34 @@ namespace ServiceMapper
 		{
 			return GetAllTypes().Where(x => x.IsInterface);
 		}
+
+		private static ConcurrentBag<Type> _types = new ConcurrentBag<Type>();
 		public static IEnumerable<Type> GetAllTypes()
 		{
-			var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-			IEnumerable<Type> types = new List<Type>();
-			foreach (Assembly asm in assemblies)
+			if (_types.Any())
+				return _types;
+
+			lock (_types)
 			{
-				try
+				//Check if someone else got the lock before us and performed the loading work
+				if (_types.Any())
+					return _types;
+				var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+				IEnumerable<Type> types = new List<Type>();
+				foreach (Assembly asm in assemblies)
 				{
-					types = types.Union(asm.GetTypes());
+					try
+					{
+						types = types.Union(asm.GetTypes());
+					}
+					catch (Exception e)
+					{
+						Console.WriteLine($"Eating exception {e.Message}");
+					}
 				}
-				catch (Exception e)
-				{
-					Console.WriteLine($"Eating exception {e.Message}");
-				}
+				_types = new ConcurrentBag<Type>(types.Distinct());
 			}
-			return types.Where(x => x.IsInterface).Distinct();
+			return _types;
 		}
 	}
 }
