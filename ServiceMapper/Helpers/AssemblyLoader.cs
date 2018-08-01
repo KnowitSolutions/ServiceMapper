@@ -34,13 +34,13 @@ namespace ServiceMapper
 			}
 		}
 
-		public static IEnumerable<Type> GetAllInterfaces()
+		public static IEnumerable<Type> GetAllInterfaces(params Assembly[] assemblies)
 		{
-			return GetAllTypes().Where(x => x.IsInterface);
+			return GetAllTypes(assemblies).Where(x => x.IsInterface);
 		}
 
 		private static ConcurrentBag<Type> _types = new ConcurrentBag<Type>();
-		public static IEnumerable<Type> GetAllTypes()
+		public static IEnumerable<Type> GetAllTypes(params Assembly[] assemblies)
 		{
 			if (_types.Any())
 				return _types;
@@ -50,7 +50,9 @@ namespace ServiceMapper
 				//Check if someone else got the lock before us and performed the loading work
 				if (_types.Any())
 					return _types;
-				var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+				assemblies = assemblies.Any() ? assemblies : AppDomain.CurrentDomain.GetAssemblies();
+
 				IEnumerable<Type> types = new List<Type>();
 				foreach (Assembly asm in assemblies)
 				{

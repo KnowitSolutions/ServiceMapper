@@ -41,6 +41,16 @@ namespace ServiceMapper.Tests
 			Assert.That(maps.Any(x => x.Type == typeof(ITest2)), Is.False);
 		}
 
+		[Test]
+		public void Maps_all_from_specific_assembly_ignored()
+		{
+			ServiceMap.Create(typeof(ITest).Assembly, x => { return GetType().Assembly == x.Assembly; }, _mapper.Object).Map();
+
+			_mapper.Verify(x => x.Map(It.IsAny<Map>()), Times.AtLeast(2));
+			Assert.That(maps.Any(x => x.Type == typeof(ITest)), Is.True);
+			Assert.That(maps.Any(x => x.Type == typeof(ITest2)), Is.True);
+		}
+
 		private IServiceMap DefaultMap()
 		{
 			return ServiceMap.Create(x =>
