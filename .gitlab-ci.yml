@@ -1,0 +1,26 @@
+variables:
+  PROJECT: ServiceMapper/ServiceMapper.csproj
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  tags: [msbuild, nuget]
+  script:
+    - '& "$env:NUGET" ("restore".split() + (($env:NUGET_SOURCES.split(",") | foreach {"-Source $_"}) -join " ").split(" "))'
+    - '& "$env:MSBUILD" /t:Rebuild /property:Configuration=Release'
+    - '& "$env:NUGET" pack "$env:PROJECT" -OutputDirectory bin -Version 0.2.$env:CI_PIPELINE_IID -Properties Configuration=Release'
+  artifacts:
+    expire_in: 1 week
+    paths:
+      - 'bin\*.nupkg'
+
+deploy:
+  stage: deploy
+  tags: [nuget]
+  script: '& "$env:NUGET" push bin\*.nupkg "$env:NUGETTI_APIKEY" -Source "$env:NUGETTI_ADDRESS"'
+
+  dependencies:
+    - build
