@@ -19,11 +19,16 @@ namespace ServiceMapper
 				_maps.Add(t, new Map(t));
 		}
 
-		public static IServiceMap Create(Assembly from, Func<Type, bool> matcher, IMapper mapper)
+		public static IServiceMap Create(Assembly[] from, Func<Type, bool> matcher, IMapper mapper)
 		{
 			IEnumerable<Type> interfaces = AssemblyLoader.GetAllInterfaces(from);
 			IEnumerable<Type> matchingInterfaces = interfaces.Where(t => matcher(t));
 			return new ServiceMap(matchingInterfaces.ToList(), mapper);
+		}
+
+		public static IServiceMap Create(Assembly from, Func<Type, bool> matcher, IMapper mapper)
+		{
+			return Create(new[] { from }, matcher, mapper);
 		}
 
 		public static IServiceMap Create(Func<Type, bool> matcher, IMapper mapper)
