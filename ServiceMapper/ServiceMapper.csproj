@@ -54,6 +54,7 @@
     <Compile Include="Interfaces\IServiceMap.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Interfaces\INameMapper.cs" />
+    <Compile Include="Mappers\URIMapper.cs" />
     <Compile Include="Mappers\ProxyMapper.cs" />
     <Compile Include="Mappers\ServiceRouteMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
