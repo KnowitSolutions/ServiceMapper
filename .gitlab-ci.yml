@@ -19,6 +19,7 @@ build:
 
 deploy:
   stage: deploy
+  only: [master]
   tags: [nuget]
   script: '& "$env:NUGET" push bin\*.nupkg "$env:NUGETTI_APIKEY" -Source "$env:NUGETTI_ADDRESS"'
 
