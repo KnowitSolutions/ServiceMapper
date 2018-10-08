@@ -36,6 +36,9 @@ namespace ServiceMapper
 
 		public static IEnumerable<Type> GetAllInterfaces(params Assembly[] assemblies)
 		{
+			if (assemblies.Any())
+				return ExtractTypesFromAssemblies(assemblies);
+			//Only use / store cached data when extracting all assemblies
 			return GetAllTypes(assemblies).Where(x => x.IsInterface);
 		}
 
@@ -52,22 +55,28 @@ namespace ServiceMapper
 					return _types;
 
 				assemblies = assemblies.Any() ? assemblies : AppDomain.CurrentDomain.GetAssemblies();
-
-				IEnumerable<Type> types = new List<Type>();
-				foreach (Assembly asm in assemblies)
-				{
-					try
-					{
-						types = types.Union(asm.GetTypes());
-					}
-					catch (Exception e)
-					{
-						Console.WriteLine($"Eating exception {e.Message}");
-					}
-				}
+				IEnumerable<Type> types = ExtractTypesFromAssemblies(assemblies);
 				_types = new ConcurrentBag<Type>(types.Distinct());
 			}
 			return _types;
+		}
+
+		private static IEnumerable<Type> ExtractTypesFromAssemblies(Assembly[] assemblies)
+		{
+			IEnumerable<Type> types = new List<Type>();
+			foreach (Assembly asm in assemblies)
+			{
+				try
+				{
+					types = types.Union(asm.GetTypes());
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine($"Eating exception {e.Message}");
+				}
+			}
+
+			return types;
 		}
 	}
 }
