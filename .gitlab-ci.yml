@@ -11,12 +11,13 @@ stages:
   - test
   - pack
   - deploy
+  
+variables:
+  VERSION: 0.2.$CI_PIPELINE_IID
 
 build:
   extends: .msbuild
   stage: build
-  variables:
-    VERSION: 0.2.$CI_PIPELINE_IID
 
 test:
   extends: .nunit3
