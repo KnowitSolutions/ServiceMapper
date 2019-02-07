@@ -1,27 +1,39 @@
-variables:
-  PROJECT: ServiceMapper/ServiceMapper.csproj
+include:
+  - project: 'r/ci-cd-fragments'
+    file: '/msbuild.yml'
+  - project: 'r/ci-cd-fragments'
+    file: '/nunit3.yml'
+  - project: 'r/ci-cd-fragments'
+    file: '/nuget.yml'
 
 stages:
   - build
+  - test
+  - pack
   - deploy
 
 build:
+  extends: .msbuild
   stage: build
-  tags: [msbuild, nuget]
-  script:
-    - >-
-      &$NUGET "restore $($NUGET_SOURCES -replace "(.+)([\r\n]+|`$)","-Source `$1 ")".split()
-    - >-
-      &$MSBUILD /t:Rebuild /property:Configuration=Release
-    - >-
-      &$NUGET pack "$PROJECT" -OutputDirectory bin -Version 0.2.$CI_PIPELINE_IID -Properties Configuration=Release
-  artifacts:
-    paths:
-      - 'bin\*.nupkg'
+  variables:
+    VERSION: 0.2.$CI_PIPELINE_IID
+
+test:
+  extends: .nunit3
+  stage: test
+  variables:
+    TEST_ASSEMBLY_PATTERN: bin\\.*Tests?\.dll$
+
+pack:
+  extends: .nuget-pack
+  stage: pack
+  variables:
+    SPEC_FILE: ServiceMapper/ServiceMapper.csproj
 
 deploy:
+  extends: .nuget-push
   stage: deploy
-  only: [master]
-  tags: [nuget]
-  script: >-
-    &$NUGET push bin\*.nupkg "$PROGET_API_KEY" -Source "$PROGET_UTILITIES_ADDRESS"
+  only: [master, /^release\//]
+  variables:
+    SOURCE: $PROGET_UTILITIES_ADDRESS
+    API_KEY: $PROGET_API_KEY
