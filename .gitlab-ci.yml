@@ -9,11 +9,13 @@ build:
   stage: build
   tags: [msbuild, nuget]
   script:
-    - '& "$env:NUGET" ("restore".split() + (($env:NUGET_SOURCES.split(",") | foreach {"-Source $_"}) -join " ").split(" "))'
-    - '& "$env:MSBUILD" /t:Rebuild /property:Configuration=Release'
-    - '& "$env:NUGET" pack "$env:PROJECT" -OutputDirectory bin -Version 0.2.$env:CI_PIPELINE_IID -Properties Configuration=Release'
+    - >-
+      &$NUGET "restore $($NUGET_SOURCES -replace "(.+)([\r\n]+|`$)","-Source `$1 ")".split()
+    - >-
+      &$MSBUILD /t:Rebuild /property:Configuration=Release
+    - >-
+      &$NUGET pack "$PROJECT" -OutputDirectory bin -Version 0.2.$CI_PIPELINE_IID -Properties Configuration=Release
   artifacts:
-    expire_in: 1 week
     paths:
       - 'bin\*.nupkg'
 
@@ -21,7 +23,5 @@ deploy:
   stage: deploy
   only: [master]
   tags: [nuget]
-  script: '& "$env:NUGET" push bin\*.nupkg "$env:NUGETTI_APIKEY" -Source "$env:NUGETTI_ADDRESS"'
-
-  dependencies:
-    - build
+  script: >-
+    &$NUGET push bin\*.nupkg "$PROGET_API_KEY" -Source "$PROGET_UTILITIES_ADDRESS"
