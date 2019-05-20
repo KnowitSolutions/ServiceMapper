@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -41,7 +41,14 @@ namespace ServiceMapper
 
 		public IServiceMap Override<T>(Action<Map> overrideFunction)
 		{
-			overrideFunction(_maps[typeof(T)]);
+			try
+			{
+				overrideFunction(_maps[typeof(T)]);
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"Error overriding type {typeof(T).FullName}", e);
+			}
 			return this;
 		}
 
@@ -55,7 +62,8 @@ namespace ServiceMapper
 				{
 					if (!entity.Value.Ignored)
 						mapped[entity.Key] = _mapper.Map(entity.Value);
-				}catch(Exception e)
+				}
+				catch (Exception e)
 				{
 					exceptions.Add(e);
 				}
