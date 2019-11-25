@@ -1,9 +1,12 @@
 include:
   - project: 'r/ci-cd-fragments'
+    ref: v1.0
     file: '/msbuild.yml'
   - project: 'r/ci-cd-fragments'
+    ref: v1.0
     file: '/nunit3.yml'
   - project: 'r/ci-cd-fragments'
+    ref: v1.0
     file: '/nuget.yml'
 
 stages:
